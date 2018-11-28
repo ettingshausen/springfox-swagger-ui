@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger-ui</artifactId>
+    <version>2.7.1-SNAPSHOT</version>
+
+    <url>https://github.com/springfox/springfox</url>
+    <description>JSON API documentation for spring based applications</description>
+    <scm>
+        <url>scm:git:git@github.com:springfox/springfox.git</url>
+        <connection>scm:git:git@github.com:springfox/springfox.git</connection>
+        <developerConnection>scm:git:git@github.com:springfox/springfox.git</developerConnection>
+    </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <swagger.ui.version>2.2.10</swagger.ui.version>
+        <upstream.url>https://github.com/swagger-api/swagger-ui/archive/v${swagger.ui.version}.zip</upstream.url>
+        <resourceDir>${project.build.outputDirectory}/META-INF/resources</resourceDir>
+        <destDir>${resourceDir}/webjars/${project.artifactId}</destDir>
+
+    </properties>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>martypitt@me.com</id>
+            <name>Marty Pitt</name>
+            <organization>The Mango Factory</organization>
+            <email>martypitt@me.com</email>
+        </developer>
+        <developer>
+            <id>dilipkrish</id>
+            <name>Dilip Krishnan</name>
+            <organization>The Container Store</organization>
+            <email>dilipkrish_subscriptions@yahoo.com</email>
+        </developer>
+        <developer>
+            <id>adrianbk</id>
+            <name>Adrian Kelly</name>
+            <organization>DiUS Computing</organization>
+            <email>adrianbkelly+swagger@gmail.com</email>
+        </developer>
+        <developer>
+            <id>ettingshausen</id>
+            <name>yang_kang</name>
+            <organization>Winning Health</organization>
+            <email>ettingshausen@outlook.com</email>
+        </developer>
+    </developers>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo message="download archive"/>
+                                <get src="${upstream.url}" dest="${project.build.directory}/${project.artifactId}.zip"/>
+                                <echo message="unzip archive"/>
+                                <unzip src="${project.build.directory}/${project.artifactId}.zip"
+                                       dest="${project.build.directory}">
+                                    <patternset>
+                                        <include name="**/dist/"/>
+                                    </patternset>
+                                </unzip>
+                                <echo message="delete index.html, swagger-ui.js"/>
+                                <delete>
+                                    <fileset dir="${project.build.directory}/swagger-ui-${swagger.ui.version}/dist"
+                                             includes="index.html,swagger-ui.js"/>
+                                </delete>
+                                <echo message="moving resources"/>
+                                <move todir="${destDir}">
+                                    <fileset dir="${project.build.directory}/swagger-ui-${swagger.ui.version}/dist"/>
+                                </move>
+                                <echo message="copy swagger-ui.html"/>
+                                <copy file="${project.basedir}/src/web/swagger-ui.html" todir="${resourceDir}"/>
+                                <echo message="copy springfox.js"/>
+                                <copy file="${project.basedir}/src/web/js/springfox.js" todir="${destDir}"/>
+                                <echo message="copy fonts"/>
+                                <copy  todir="${destDir}/fonts">
+                                    <fileset dir="${project.basedir}/src/web/fonts"/>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
