@@ -1,4 +1,4 @@
->**Note**: This project is forked from [springfox](https://github.com/springfox/springfox]) version 2.7.0.
+>**Note**: This project was forked from [springfox](https://github.com/springfox/springfox]) version 2.7.0.
 
 ##### Build webjar
 
