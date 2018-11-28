@@ -1,3 +1,11 @@
+>**Note**: This project is forked from [springfox](https://github.com/springfox/springfox]) version 2.7.0.
+
+##### Build webjar
+
+```sh
+mvn clean package
+```
+
 ##### springfox-swagger-ui
 
 - Creates a webjar containing the swagger-ui static content.
